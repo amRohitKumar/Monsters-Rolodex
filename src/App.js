@@ -1,24 +1,32 @@
 import React, {Component} from 'react';
-import logo from './logo.svg';
+// import logo from './logo.svg';
+import { CardList } from './components/card-list/card-list.component';
 import './App.css';
 
 class App extends Component{
   constructor(){
     super();
     this.state = {
-      string: "Hello Rohit !"
+      monsters: []
     }
+  }
+
+  componentDidMount(){
+    fetch('https://jsonplaceholder.typicode.com/users')
+      .then(response => response.json())
+      .then(users => {
+        // console.log(users);
+        this.setState({monsters: users});
+      })
   }
   render(){
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            {this.state.string}
-          </p>
-          <button onClick = {() => this.setState({string: "Hello Rohit Kumar !"})}>Change Text</button>
-        </header>
+        <CardList name="rohit"> 
+          {
+            this.state.monsters.map(monster => <h1 key = {monster.id}> { monster.name } </h1>)
+          }
+        </CardList>
       </div>
     );
   }
